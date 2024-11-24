@@ -10,27 +10,43 @@ const Home = () => {
     const getLatesPosts = () => {
 
         axios.post("https://akademia108.pl/api/social-app/post/latest")
-         .then((req)=>{
-            
-            setPosts(req.data)
-         })
-         .catch((error) => {
-            console.error(error);
-        });
-    
+            .then((res) => {
+
+                setPosts(res.data)
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+
 
     };
 
-    useEffect(()=>{
+    const getNextPosts = () => {
+
+        axios.post("https://akademia108.pl/api/social-app/post/older-then", {
+            date: posts[posts.length - 1].created_at
+        })
+            .then((res) => {
+
+                setPosts(posts.concat(res.data));
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+
+
+    };
+
+    useEffect(() => {
         getLatesPosts();
     }, [])
 
-    console.log(posts)
     return (
         <div className="home">
             <div className="postList">{posts.map((post) => {
-                    return <Post post={post} key={post.id} />;
-                })}
+                return <Post post={post} key={post.id} />;
+            })}
+                <button className='btn loadMore' onClick={getNextPosts}>Load more</button>
             </div>
         </div>
 
