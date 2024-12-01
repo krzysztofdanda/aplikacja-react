@@ -4,7 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Post from "../components/Post";
 
-const Home = () => {
+const Home = (props) => {
     const [posts, setPosts] = useState([])
 
     const getLatesPosts = () => {
@@ -39,7 +39,7 @@ const Home = () => {
 
     useEffect(() => {
         getLatesPosts();
-    }, [])
+    }, [props.user]);
 
     return (
         <div className="home">
